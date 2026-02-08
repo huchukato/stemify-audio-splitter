@@ -24,13 +24,33 @@
       "node_modules/**/*"
     ],
     "mac": {
-      "category": "public.app-category.music"
+      "category": "public.app-category.music",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": ["x64", "arm64"]
+        },
+        {
+          "target": "zip",
+          "arch": ["x64", "arm64"]
+        }
+      ]
     },
     "win": {
-      "target": "nsis"
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64", "ia32", "arm64"]
+        }
+      ]
     },
     "linux": {
-      "target": "AppImage"
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": ["x64", "arm64"]
+        }
+      ]
     }
   },
   "devDependencies": {
