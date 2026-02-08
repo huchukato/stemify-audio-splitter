@@ -2,9 +2,18 @@
 
 echo "🚀 Inizializzazione dell'applicazione Stemify - The Audio Splitter..."
 
-# Verifica dei prerequisiti
-command -v uv >/dev/null 2>&1 || { echo "❌ uv è richiesto ma non è installato. Installalo con: curl -LsSf https://astral.sh/uv/install.sh | sh"; exit 1; }
-command -v npm >/dev/null 2>&1 || { echo "❌ npm è richiesto ma non è installato."; exit 1; }
+# Verifica e installazione dei prerequisiti
+if ! command -v uv >/dev/null 2>&1; then
+    echo "📦 Installing uv..."
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+    export PATH="$HOME/.cargo/bin:$PATH"
+    echo "✅ uv installed successfully!"
+fi
+
+if ! command -v npm >/dev/null 2>&1; then
+    echo "❌ npm è richiesto ma non è installato. Installalo da https://nodejs.org"
+    exit 1
+fi
 
 # Configurazione del backend con uv
 echo "🐍 Configurazione del backend..."

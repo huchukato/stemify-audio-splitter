@@ -1,52 +1,112 @@
 # Stemify - The Audio Splitter
 
-Un'applicazione web full stack per la separazione delle tracce audio. Questa applicazione permette di caricare un file audio e separarlo nelle sue componenti: voce, batteria, basso e altri strumenti.
+A full-stack web application for audio track separation. This application allows you to upload an audio file and separate it into its components: vocals, drums, bass, and other instruments.
 
-## 🚀 Caratteristiche
+## 🚀 Features
 
-- Interfaccia web intuitiva
-- Separazione delle tracce in tempo reale
-- Anteprima audio delle tracce separate
-- Download delle singole tracce
-- Supporto per vari formati audio
+- Intuitive web interface
+- Real-time track separation
+- Audio preview of separated tracks
+- Download individual tracks
+- Support for various audio formats
 
-## 📋 Prerequisiti
+## 📋 Prerequisites
 
-- Python 3.12 o superiore
-- uv (Python package manager) - installalo con: `curl -LsSf https://astral.sh/uv/install.sh | sh`
+- Python 3.12 or higher
+- uv (Python package manager) - install it with: `curl -LsSf https://astral.sh/uv/install.sh | sh`
 - npm (Node Package Manager)
 - Git
 
-## 💻 Installazione
+## 💻 Installation
 
-### Installazione Rapida per Linux e macOS
+### Quick Installation for Linux and macOS
 
-1. Clona il repository:
+1. Clone the repository:
 ```bash
 git clone https://github.com/huchukato/stemify-audio-splitter.git
 cd stemify-audio-splitter
 ```
 
-2. Esegui lo script di installazione:
+2. Run the installation script:
 ```bash
-chmod +x install_and_run.sh
-./install_and_run.sh
+chmod +x linux_mac_install_run.sh
+./linux_mac_install_run.sh
 ```
 
-3. Apri il browser e vai a:
+3. The script will automatically install uv and open your browser at:
 ```
 http://localhost:5173
 ```
 
-### Installazione Manuale (Per tutti i sistemi operativi)
+### Windows Installation
 
-Se preferisci installare manualmente o stai usando Windows:
+#### Option 1: Quick Installation (Recommended)
+
+1. Clone the repository:
+```powershell
+git clone https://github.com/huchukato/stemify-audio-splitter.git
+cd stemify-audio-splitter
+```
+
+2. Run the installation script:
+```powershell
+.\win_install_run.bat
+```
+
+3. The script will automatically install uv and open your browser at:
+```
+http://localhost:5173
+```
+
+#### Option 2: Manual Installation
+
+1. Clone the repository:
+```powershell
+git clone https://github.com/huchukato/stemify-audio-splitter.git
+cd stemify-audio-splitter
+```
+
+2. Install uv (Python package manager):
+```powershell
+# Using PowerShell
+irm https://astral.sh/uv/install.ps1 | iex
+```
+
+3. Install and run backend:
+```powershell
+cd demucs-backend
+uv sync
+uv run python app.py
+```
+
+4. In a new terminal, install and run frontend:
+```powershell
+cd demucs-gui
+npm install
+npm run dev
+```
+
+5. Open your browser and go to:
+```
+http://localhost:5173
+```
+
+#### Option 3: Using WSL (Windows Subsystem for Linux)
+
+If you have WSL installed, you can use the Linux installation script:
+
+1. Open WSL terminal
+2. Follow the Linux installation steps above
+
+### Manual Installation (For all operating systems)
+
+If you prefer to install manually or need more control:
 
 #### Backend
 ```bash
 cd demucs-backend
 uv sync
-uv run gunicorn -c gunicorn_config.py app:app  # Su Windows: uv run python app.py
+uv run gunicorn -c gunicorn_config.py app:app  # On Windows: uv run python app.py
 ```
 
 #### Frontend
@@ -56,20 +116,21 @@ npm install
 npm run dev
 ```
 
-## 🏗 Struttura del Progetto
+## 🏗 Project Structure
 
 ```
 demucs-gui/
-├── demucs-backend/     # Server Flask
-│   ├── app.py         # Entry point del backend
+├── demucs-backend/     # Flask server
+│   ├── app.py         # Backend entry point
 │   └── requirements.txt
-├── demucs-gui/        # Client React
-│   ├── src/          # Codice sorgente frontend
+├── demucs-gui/        # React client
+│   ├── src/          # Frontend source code
 │   └── package.json
-└── install_and_run.sh # Script di installazione
+├── linux_mac_install_run.sh # Linux/macOS installation script
+└── win_install_run.bat # Windows installation script
 ```
 
-## 🔧 Tecnologie Utilizzate
+## 🔧 Technologies Used
 
 - **Backend**: 
   - Flask (Python)
@@ -82,21 +143,21 @@ demucs-gui/
   - Vite
   - Tailwind CSS
 
-## 🤝 Contribuire
+## 🤝 Contributing
 
-Le pull request sono benvenute. Per modifiche importanti, apri prima un issue per discutere cosa vorresti cambiare.
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
-## 📝 Licenza
+## 📝 License
 
 [MIT](https://choosealicense.com/licenses/mit/)
 
-## 👥 Autori
+## 👥 Authors
 
 - huchukato 
   - 🐙 [GitHub](https://github.com/huchukato)
   - 🐦 [X (Twitter)](https://twitter.com/huchukato)
   - 🎨 [Civitai](https://civitai.com/user/huchukato) - Check out my AI art models!
 
-## 🙏 Ringraziamenti
+## 🙏 Acknowledgments
 
-- [Facebook Research](https://github.com/facebookresearch/demucs) per Demucs
+- [Facebook Research](https://github.com/facebookresearch/demucs) for Demucs
