@@ -1,0 +1,18 @@
+<svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="16" height="16" fill="#111827" rx="3"/>
+  
+  <!-- Audio waveform icon centered -->
+  <g transform="translate(8, 8)">
+    <!-- Center stem -->
+    <rect x="-1" y="-5" width="2" height="10" fill="#EC4899" rx="1"/>
+    
+    <!-- Left waveforms -->
+    <rect x="-3.5" y="-3" width="1.25" height="6" fill="#A855F7" rx="0.625"/>
+    <rect x="-5.5" y="-2" width="1" height="4" fill="#C084FC" rx="0.5"/>
+    
+    <!-- Right waveforms -->
+    <rect x="2.25" y="-2.5" width="1.25" height="5" fill="#A855F7" rx="0.625"/>
+    <rect x="4.25" y="-1.25" width="1" height="2.5" fill="#C084FC" rx="0.5"/>
+  </g>
+</svg>

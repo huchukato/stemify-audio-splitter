@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="logo.svg" alt="Stemify - The Audio Splitter" width="300">
+</p>
+
 # Stemify - The Audio Splitter
 
 A full-stack web application for audio track separation. This application allows you to upload an audio file and separate it into its components: vocals, drums, bass, and other instruments.
