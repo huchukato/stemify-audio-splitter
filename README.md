@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="stemifylogo.png" alt="Stemify - The Audio Splitter" width="300">
+  <img src="demucs-gui/public/logo.png" alt="Stemify - The Audio Splitter" width="300">
 </p>
 
 # Stemify - The Audio Splitter
