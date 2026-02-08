@@ -89,8 +89,9 @@ def process_audio():
             shutil.copy2(stem_file, new_file_path)
             stems[stem_type] = f'/download/{session_id}/{new_filename}'
 
-        # Clean up the separated directory but keep the session folder
+        # Clean up the separated directory and original file but keep the session folder
         shutil.rmtree(output_dir)
+        os.remove(file_path)  # Remove the original uploaded file
 
         print(f"Separated stems: {stems}")
         return jsonify({
@@ -106,6 +107,19 @@ def process_audio():
         if session_folder.exists():
             shutil.rmtree(session_folder)
         return jsonify({'error': str(e)}), 500
+
+@app.route('/cleanup/<session_id>', methods=['DELETE'])
+def cleanup_session(session_id):
+    try:
+        session_folder = UPLOAD_FOLDER / session_id
+        if session_folder.exists():
+            shutil.rmtree(session_folder)
+            return jsonify({'message': 'Session cleaned up successfully'}), 200
+        else:
+            return jsonify({'error': 'Session not found'}), 404
+    except Exception as e:
+        print(f"Error cleaning up session: {str(e)}")
+        return jsonify({'error': 'Cleanup failed'}), 500
 
 @app.route('/download/<session_id>/<filename>')
 def download_file(session_id, filename):

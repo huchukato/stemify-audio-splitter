@@ -6,6 +6,7 @@ interface StemResponse {
     bass: string;
     other: string;
   }
+  session_id: string;
 }
 
 interface ProcessedStems {
@@ -13,9 +14,10 @@ interface ProcessedStems {
   drums: string;
   bass: string;
   other: string;
+  session_id: string;
 }
 
-const API_URL = import.meta.env.VITE_API_URL || 'https://5000-01jcm8y85taewnh1dh4tmyywmd.cloudspaces.litng.ai';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001';
 
 export async function uploadAudio(file: File): Promise<ProcessedStems> {
   // Validazione iniziale del file
@@ -62,7 +64,8 @@ export async function uploadAudio(file: File): Promise<ProcessedStems> {
       vocals: data.stems.vocals || '',
       drums: data.stems.drums || '',
       bass: data.stems.bass || '',
-      other: data.stems.other || ''
+      other: data.stems.other || '',
+      session_id: data.session_id || ''
     };
 
   } catch (error) {
@@ -90,5 +93,17 @@ export async function checkServerStatus(): Promise<boolean> {
     return response.ok;
   } catch {
     return false;
+  }
+}
+
+// Funzione per cancellare una sessione precedente
+export async function cleanupSession(sessionId: string): Promise<void> {
+  try {
+    await fetch(`${API_URL}/cleanup/${sessionId}`, {
+      method: 'DELETE'
+    });
+  } catch (error) {
+    console.warn('Failed to cleanup session:', error);
+    // Non lanciamo errore, è solo cleanup
   }
 }

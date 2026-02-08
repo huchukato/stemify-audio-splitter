@@ -8,8 +8,8 @@ export function Header() {
         <Music2 className="w-8 h-8 text-pink-500" />
       </div>
       <div>
-        <h1 className="text-4xl font-bold">Demucs Web App</h1>
-        <p className="text-gray-400 text-sm">AI-Powered Music Source Separation</p>
+        <h1 className="text-4xl font-bold">Stemify</h1>
+        <p className="text-gray-400 text-sm">The Audio Splitter</p>
       </div>
     </div>
   );

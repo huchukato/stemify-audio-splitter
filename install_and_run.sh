@@ -1,20 +1,18 @@
 #!/bin/bash
 
-echo "🚀 Inizializzazione dell'applicazione Demucs GUI..."
+echo "🚀 Inizializzazione dell'applicazione Stemify - The Audio Splitter..."
 
 # Verifica dei prerequisiti
-command -v python3 >/dev/null 2>&1 || { echo "❌ Python3 è richiesto ma non è installato."; exit 1; }
+command -v uv >/dev/null 2>&1 || { echo "❌ uv è richiesto ma non è installato. Installalo con: curl -LsSf https://astral.sh/uv/install.sh | sh"; exit 1; }
 command -v npm >/dev/null 2>&1 || { echo "❌ npm è richiesto ma non è installato."; exit 1; }
 
-# Creazione e attivazione dell'ambiente virtuale per il backend
+# Configurazione del backend con uv
 echo "🐍 Configurazione del backend..."
 cd demucs-backend
-python3 -m venv .venv
-source .venv/bin/activate
 
-# Installazione delle dipendenze del backend
-echo "📦 Installazione dipendenze Python..."
-pip install -r requirements.txt
+# Installazione delle dipendenze del backend con uv
+echo "📦 Installazione dipendenze Python con uv..."
+uv sync
 
 # Creazione delle cartelle necessarie
 mkdir -p temp separated
@@ -28,11 +26,21 @@ npm install
 # Avvio dei servizi
 echo "🎯 Avvio dei servizi..."
 
-# Avvio del backend con gunicorn
+# Avvio del backend con Gunicorn
 cd ../demucs-backend
-source .venv/bin/activate
-gunicorn -c gunicorn_config.py app:app &
+uv run gunicorn --bind 0.0.0.0:5001 --workers 1 --timeout 120 app:app &
 BACKEND_PID=$!
+disown $BACKEND_PID 2>/dev/null
+
+# Attesa che il backend sia pronto
+echo "⏳ Attesa avvio backend..."
+for i in {1..30}; do
+    if curl -s http://localhost:5001/health > /dev/null 2>&1; then
+        echo "✅ Backend pronto!"
+        break
+    fi
+    sleep 1
+done
 
 # Avvio del frontend
 cd ../demucs-gui

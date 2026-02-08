@@ -1,6 +1,6 @@
-# Demucs Web App
+# Stemify - The Audio Splitter
 
-Un'applicazione web full stack per Demucs, uno strumento per la separazione delle tracce musicali. Questa applicazione permette di caricare un file audio e separarlo nelle sue componenti: voce, batteria, basso e altri strumenti.
+Un'applicazione web full stack per la separazione delle tracce audio. Questa applicazione permette di caricare un file audio e separarlo nelle sue componenti: voce, batteria, basso e altri strumenti.
 
 ## 🚀 Caratteristiche
 
@@ -12,7 +12,8 @@ Un'applicazione web full stack per Demucs, uno strumento per la separazione dell
 
 ## 📋 Prerequisiti
 
-- Python 3.8 o superiore
+- Python 3.12 o superiore
+- uv (Python package manager) - installalo con: `curl -LsSf https://astral.sh/uv/install.sh | sh`
 - npm (Node Package Manager)
 - Git
 
@@ -22,8 +23,8 @@ Un'applicazione web full stack per Demucs, uno strumento per la separazione dell
 
 1. Clona il repository:
 ```bash
-git clone https://github.com/huchukato/demucs-web-app.git
-cd demucs-web-app
+git clone https://github.com/huchukato/stemify-audio-splitter.git
+cd stemify-audio-splitter
 ```
 
 2. Esegui lo script di installazione:
@@ -44,10 +45,8 @@ Se preferisci installare manualmente o stai usando Windows:
 #### Backend
 ```bash
 cd demucs-backend
-python3 -m venv .venv
-source .venv/bin/activate  # Su Windows: .venv\Scripts\activate
-pip install -r requirements.txt
-gunicorn -c gunicorn_config.py app:app  # Su Windows: python app.py
+uv sync
+uv run gunicorn -c gunicorn_config.py app:app  # Su Windows: uv run python app.py
 ```
 
 #### Frontend

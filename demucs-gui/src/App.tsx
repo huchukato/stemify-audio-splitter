@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Header } from './components/Header';
 import { FileUpload } from './components/FileUpload';
 import { StemCard } from './components/StemCard';
-import { uploadAudio, checkServerStatus } from './lib/api';
+import { uploadAudio, checkServerStatus, cleanupSession } from './lib/api';
 import { Music4, Wand2, Sparkles } from 'lucide-react';
 
 interface Stem {
@@ -15,6 +15,7 @@ export default function App() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [stems, setStems] = useState<Stem[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [currentSessionId, setCurrentSessionId] = useState<string | null>(null);
 
   // Aggiungi questo useEffect
   useEffect(() => {
@@ -34,7 +35,15 @@ export default function App() {
       setIsProcessing(true);
       setError(null);
       
+      // Cleanup della sessione precedente se esiste
+      if (currentSessionId) {
+        await cleanupSession(currentSessionId);
+      }
+      
       const result = await uploadAudio(file);
+      
+      // Salva il nuovo session_id e pulisce quello vecchio
+      setCurrentSessionId(result.session_id);
       
       setStems([
         { name: 'Vocals', url: result.vocals, color: 'bg-pink-500' },
