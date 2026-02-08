@@ -6,6 +6,15 @@ node_modules/
 # Build files
 dist/
 build/
+dist-electron/
+*.dmg
+*.exe
+*.AppImage
+*.zip
+*.blockmap
+
+# Unpacked builds
+*/unpacked/
 
 # Environment files
 .env

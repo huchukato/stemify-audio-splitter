@@ -47,7 +47,7 @@ export function FileUpload({ isProcessing, onFileUpload }: FileUploadProps) {
 
   return (
     <div className="max-w-xl mx-auto mb-12">
-      <label 
+      <div 
         className={`
           flex flex-col items-center justify-center w-full h-64
           border-2 border-dashed rounded-xl 
@@ -71,29 +71,26 @@ export function FileUpload({ isProcessing, onFileUpload }: FileUploadProps) {
             </>
           ) : (
             <>
-              <div className="bg-pink-500/10 p-4 rounded-xl mb-4">
+              <input 
+                id="file-upload"
+                type="file" 
+                className="hidden" 
+                accept="audio/mpeg"
+                onChange={handleFileSelect}
+                disabled={isProcessing}
+              />
+              <div 
+                className="bg-pink-500/10 p-4 rounded-xl mb-4 cursor-pointer"
+                onClick={() => document.getElementById('file-upload')?.click()}
+              >
                 <Upload className="w-12 h-12 text-pink-500" />
               </div>
               <p className="text-2xl font-semibold mb-2">Drop your track here</p>
               <p className="text-sm text-gray-400 mb-2">MP3 files up to 20MB</p>
-              <button 
-                className="px-4 py-2 bg-pink-500 rounded-lg text-sm font-medium hover:bg-pink-600 transition-colors"
-                onClick={() => document.getElementById('file-upload')?.click()}
-              >
-                Select File
-              </button>
             </>
           )}
         </div>
-        <input 
-          id="file-upload"
-          type="file" 
-          className="hidden" 
-          accept="audio/mpeg"
-          onChange={handleFileSelect}
-          disabled={isProcessing}
-        />
-      </label>
+      </div>
     </div>
   );
 }
