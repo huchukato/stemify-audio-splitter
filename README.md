@@ -4,6 +4,13 @@
 
 # Stemify - The Audio Splitter
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python](https://img.shields.io/badge/Python-3.12+-blue.svg)](https://python.org)
+[![React](https://img.shields.io/badge/React-19+-61DAFB.svg)](https://reactjs.org)
+[![Flask](https://img.shields.io/badge/Flask-2.0+-green.svg)](https://flask.palletsprojects.com)
+[![AI](https://img.shields.io/badge/AI-Demucs%20v4-purple.svg)](https://github.com/facebookresearch/demucs)
+[![Platform](https://img.shields.io/badge/Platform-Web%20%7C%20macOS%20%7C%20Windows%20%7C%20Linux-lightgrey.svg)]()
+
 A web application for audio track separation. This application allows you to upload an audio file and separate it into its components: vocals, drums, bass, and other instruments.
 
 ## 🚀 Features
@@ -104,3 +111,15 @@ cd stemify-audio-splitter
 ## 📝 License
 
 This project is open source and available under the [MIT License](LICENSE).
+
+## 👥 Author
+
+- **huchukato**
+  - 🐙 [GitHub](https://github.com/huchukato)
+  - 🐦 [X (Twitter)](https://twitter.com/huchukato)
+  - 🎨 [Civitai](https://civitai.com/user/huchukato) - Check out my AI art models!
+
+## 🙏 Acknowledgments
+
+- [Facebook Research](https://github.com/facebookresearch/demucs) for the Demucs v4 model
+- The open-source community for the amazing tools and libraries used in this project

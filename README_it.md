@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="demucs-gui/public/logo.png" alt="Stemify - The Audio Splitter" width="300">
+</p>
+
 # Stemify - The Audio Splitter
 
 Un'applicazione web full stack per la separazione delle tracce audio. Questa applicazione permette di caricare un file audio e separarlo nelle sue componenti: voce, batteria, basso e altri strumenti.
