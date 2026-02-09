@@ -29,8 +29,8 @@ cd stemify-audio-splitter
 
 2. Esegui lo script di installazione:
 ```bash
-chmod +x install_and_run.sh
-./install_and_run.sh
+chmod +x linux_mac_install_run.sh
+./linux_mac_install_run.sh
 ```
 
 3. Apri il browser e vai a:
@@ -38,15 +38,14 @@ chmod +x install_and_run.sh
 http://localhost:5173
 ```
 
-### Installazione Manuale (Per tutti i sistemi operativi)
-
-Se preferisci installare manualmente o stai usando Windows:
+### Installazione Manuale
 
 #### Backend
 ```bash
 cd demucs-backend
 uv sync
-uv run gunicorn --bind 0.0.0.0:5001 --workers 1 --timeout 120 app:app  # Su Windows: uv run python app.py
+mkdir -p temp separated
+uv run python -m gunicorn --bind 0.0.0.0:5001 --workers 1 --timeout 120 app:app
 ```
 
 #### Frontend
@@ -56,17 +55,34 @@ npm install
 npm run dev
 ```
 
+### Installazione Windows
+
+1. Clona il repository:
+```powershell
+git clone https://github.com/huchukato/stemify-audio-splitter.git
+cd stemify-audio-splitter
+```
+
+2. Esegui lo script di installazione:
+```powershell
+.\win_install_run.bat
+```
+
+3. Apri il browser e vai a `http://localhost:5173`
+
 ## 🏗 Struttura del Progetto
 
 ```
-demucs-gui/
-├── demucs-backend/     # Server Flask
-│   ├── app.py         # Entry point del backend
-│   └── pyproject.toml
-├── demucs-gui/        # Client React
-│   ├── src/          # Codice sorgente frontend
-│   └── package.json
-└── install_and_run.sh # Script di installazione
+demucs-backend/     # Server Flask
+├── app.py         # Entry point del backend
+├── pyproject.toml
+└── temp/          # Cartella temporanea upload
+demucs-gui/        # Client React
+├── src/          # Codice sorgente frontend
+├── public/       # File statici (logo, etc.)
+└── package.json
+linux_mac_install_run.sh  # Script installazione Linux/macOS
+win_install_run.bat       # Script installazione Windows
 ```
 
 ## 🔧 Tecnologie Utilizzate
