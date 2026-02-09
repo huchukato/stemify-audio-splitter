@@ -6,11 +6,15 @@
   "main": "electron/main.js",
   "homepage": "./",
   "scripts": {
-    "dev": "vite",
-    "electron": "electron .",
-    "electron-dev": "concurrently \"npm run dev\" \"wait-on http://localhost:5173 && electron .\"",
+    "dev": "concurrently \"npm run dev:vite\" \"npm run dev:electron\"",
+    "dev:vite": "vite",
+    "dev:electron": "wait-on http://localhost:5173 && electron .",
+    "build": "vite build",
     "electron-build": "npm run build && electron-builder",
-    "build": "vite build"
+    "electron-build-prod": "NODE_ENV=production npm run build && electron-builder",
+    "sign-mac": "find dist-electron -name '*.app' -exec ../sign_mac_app.sh {} \\;",
+    "build-and-sign": "npm run electron-build-prod && npm run sign-mac",
+    "start": "npm run dev"
   },
   "build": {
     "appId": "com.stemify.app",
@@ -21,6 +25,8 @@
     "files": [
       "dist/**/*",
       "electron/**/*",
+      "loading.html",
+      "public/logo.png",
       "node_modules/**/*"
     ],
     "mac": {

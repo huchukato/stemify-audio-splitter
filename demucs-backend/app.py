@@ -25,18 +25,6 @@ UPLOAD_FOLDER = BASE_DIR / 'temp'
 # Ensure directory exists
 UPLOAD_FOLDER.mkdir(parents=True, exist_ok=True)
 
-@app.route('/', defaults={'path': ''})
-@app.route('/<path:path>')
-def catch_all(path):
-    try:
-        static_folder = app.static_folder  
-        if static_folder is None:  
-            return jsonify({'error': 'Static folder not set'}), 500
-        return send_from_directory(static_folder, 'index.html')
-    except Exception as e:
-        print(f"Error serving index.html: {str(e)}")
-        return jsonify({'error': 'File not found'}), 404
-
 @app.route('/health', methods=['GET'])
 def health_check():
     return jsonify({"status": "healthy"})
@@ -153,4 +141,5 @@ def cleanup_old_files():
         print(f"Error during cleanup: {str(e)}")
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5001)
+    print("🚀 Avvio del backend Stemify su http://localhost:5001")
+    app.run(debug=False, host='0.0.0.0', port=5001)
