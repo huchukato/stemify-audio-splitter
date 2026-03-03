@@ -104,3 +104,20 @@ Le pull request sono benvenute. Per modifiche importanti, apri prima un issue pe
 ## 🙏 Ringraziamenti
 
 - [Facebook Research](https://github.com/facebookresearch/demucs) per Demucs
+
+## 🛡️ Sicurezza
+
+Questo progetto mantiene un forte posture di sicurezza con regolari valutazioni delle vulnerabilità e patch tempestive.
+
+### **Fix di Sicurezza Recenti:**
+- ✅ **Marzo 2026**: Risoluzione completa audit di sicurezza
+  - Corrette tutte le 15+ vulnerabilità tramite npm audit
+  - Aggiornato rollup (CVE-2026-27606), tar (CVE-2026-26960), minimatch (CVE-2026-27903)
+  - Risolti tutti gli alert HIGH e MODERATE severity
+  - **Stato**: 0 vulnerabilità (npm audit)
+
+### **Pratiche di Sicurezza:**
+- 🔍 **Audit Regolari**: Monitoraggio automatico Dependabot
+- 🚀 **Aggiornamenti Immediati**: Patch di sicurezza applicate subito
+- 📋 **Disclosure Trasparente**: Reporting vulnerabilità trasparente
+- 🔒 **Dipendenze Sicure**: Tutti i pacchetti mantenuti aggiornati

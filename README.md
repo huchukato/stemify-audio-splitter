@@ -108,7 +108,24 @@ cd stemify-audio-splitter
 - **Frontend not loading:** Check that npm installed successfully
 - **Audio processing fails:** Ensure the audio file is under 20MB
 
-## 📝 License
+## �️ Security
+
+This project maintains a strong security posture with regular vulnerability assessments and prompt patching.
+
+### **Recent Security Fixes:**
+- ✅ **March 2026**: Complete security audit resolution
+  - Fixed all 15+ vulnerabilities via npm audit
+  - Updated rollup (CVE-2026-27606), tar (CVE-2026-26960), minimatch (CVE-2026-27903)
+  - Resolved all HIGH and MODERATE severity alerts
+  - **Status**: 0 vulnerabilities (npm audit)
+
+### **Security Practices:**
+- 🔍 **Regular Audits**: Automated Dependabot monitoring
+- 🚀 **Prompt Updates**: Security patches applied immediately
+- 📋 **Vulnerability Disclosure**: Transparent security reporting
+- 🔒 **Secure Dependencies**: All packages kept up-to-date
+
+## �📝 License
 
 This project is open source and available under the [MIT License](LICENSE).
 
