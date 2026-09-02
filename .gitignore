@@ -49,3 +49,6 @@ Thumbs.db
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# uv lock (local only)
+uv.lock
