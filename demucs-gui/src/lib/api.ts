@@ -4,8 +4,12 @@ interface StemResponse {
     vocals: string;
     drums: string;
     bass: string;
-    other: string;
+    instrumental: string;
   }
+  analysis: {
+    bpm: number | null;
+    key: string | null;
+  };
   session_id: string;
 }
 
@@ -13,13 +17,27 @@ interface ProcessedStems {
   vocals: string;
   drums: string;
   bass: string;
-  other: string;
+  instrumental: string;
   session_id: string;
+  analysis: {
+    bpm: number | null;
+    key: string | null;
+  };
+}
+
+interface JobStatus {
+  state: 'processing' | 'done' | 'error';
+  progress: number;
+  message: string;
+  stems?: Record<string, string>;
+  analysis?: { bpm: number | null; key: string | null };
+  session_id?: string;
+  error?: string;
 }
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001';
 
-export async function uploadAudio(file: File): Promise<ProcessedStems> {
+export async function uploadAudio(file: File, onProgress?: (progress: number, message: string) => void): Promise<ProcessedStems> {
   // Validazione iniziale del file
   if (!file) {
     throw new Error('No file provided');
@@ -33,13 +51,13 @@ export async function uploadAudio(file: File): Promise<ProcessedStems> {
   formData.append('file', file);
 
   try {
+    // Step 1: avvia il job
     const response = await fetch(`${API_URL}/process`, {
       method: 'POST',
       body: formData
     });
 
     if (!response.ok) {
-      // Gestione più dettagliata degli errori HTTP
       switch (response.status) {
         case 413:
           throw new Error('File too large. Please upload a smaller file.');
@@ -53,35 +71,58 @@ export async function uploadAudio(file: File): Promise<ProcessedStems> {
       }
     }
 
-    const data = await response.json() as StemResponse;
+    const data = await response.json() as { job_id: string };
+    const jobId = data.job_id;
 
-    // Validazione della risposta
-    if (!data.stems) {
-      throw new Error('Invalid server response');
-    }
+    // Step 2: polla lo stato del job
+    return new Promise<ProcessedStems>((resolve, reject) => {
+      const poll = async () => {
+        try {
+          const statusResp = await fetch(`${API_URL}/status/${jobId}`);
+          if (!statusResp.ok) {
+            reject(new Error(`Status check failed: ${statusResp.status}`));
+            return;
+          }
 
-    return {
-      vocals: data.stems.vocals || '',
-      drums: data.stems.drums || '',
-      bass: data.stems.bass || '',
-      other: data.stems.other || '',
-      session_id: data.session_id || ''
-    };
+          const status = await statusResp.json() as JobStatus;
+
+          if (onProgress) {
+            onProgress(status.progress, status.message || '');
+          }
+
+          if (status.state === 'done' && status.stems && status.session_id) {
+            resolve({
+              vocals: status.stems.vocals || '',
+              drums: status.stems.drums || '',
+              bass: status.stems.bass || '',
+              instrumental: status.stems.instrumental || '',
+              session_id: status.session_id,
+              analysis: status.analysis || { bpm: null, key: null }
+            });
+          } else if (status.state === 'error') {
+            reject(new Error(status.error || 'Processing failed'));
+          } else {
+            // Continua a pollare ogni 500ms
+            setTimeout(poll, 500);
+          }
+        } catch (err) {
+          reject(err instanceof Error ? err : new Error('Status poll failed'));
+        }
+      };
+      setTimeout(poll, 500);
+    });
 
   } catch (error) {
     console.error('API Error:', error);
-    
-    // Gestione più specifica degli errori di rete
+
     if (error instanceof TypeError && error.message === 'Failed to fetch') {
       throw new Error('Unable to connect to the server. Please check your internet connection.');
     }
-    
-    // Rilancia l'errore se è già un'istanza di Error
+
     if (error instanceof Error) {
       throw error;
     }
 
-    // Fallback generico per altri tipi di errori
     throw new Error('An unexpected error occurred. Please try again later.');
   }
 }

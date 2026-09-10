@@ -1,12 +1,14 @@
 import React, { useCallback } from 'react';
-import { Upload, Loader2, Music4 } from 'lucide-react';
+import { Upload, Music4 } from 'lucide-react';
 
 interface FileUploadProps {
   isProcessing: boolean;
   onFileUpload: (file: File) => void;
+  progress: number;
+  progressMessage: string;
 }
 
-export function FileUpload({ isProcessing, onFileUpload }: FileUploadProps) {
+export function FileUpload({ isProcessing, onFileUpload, progress, progressMessage }: FileUploadProps) {
   const MAX_FILE_SIZE = 20 * 1024 * 1024; // 20MB in bytes
 
   const handleDrag = useCallback((e: React.DragEvent) => {
@@ -47,10 +49,10 @@ export function FileUpload({ isProcessing, onFileUpload }: FileUploadProps) {
 
   return (
     <div className="max-w-xl mx-auto mb-12">
-      <div 
+      <div
         className={`
           flex flex-col items-center justify-center w-full h-64
-          border-2 border-dashed rounded-xl 
+          border-2 border-dashed rounded-xl
           ${isProcessing ? 'border-gray-600 bg-gray-800/50' : 'border-pink-500 hover:bg-gray-800/50 cursor-pointer'}
           transition-all duration-300 backdrop-blur-sm
         `}
@@ -62,24 +64,36 @@ export function FileUpload({ isProcessing, onFileUpload }: FileUploadProps) {
         <div className="flex flex-col items-center justify-center pt-5 pb-6">
           {isProcessing ? (
             <>
-              <div className="relative">
-                <Loader2 className="w-16 h-16 text-pink-500 animate-spin mb-4" />
-                <Music4 className="w-8 h-8 text-pink-500 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
+              <div className="relative mb-4">
+                <Music4 className="w-12 h-12 text-pink-500 animate-pulse" />
               </div>
               <p className="text-2xl font-semibold mb-2">Processing your track</p>
-              <p className="text-sm text-gray-400">This may take a few minutes</p>
+              <p className="text-sm text-gray-400 mb-4">{progressMessage || 'This may take a few minutes'}</p>
+
+              {/* Progress bar */}
+              <div className="w-72 max-w-full px-4">
+                <div className="w-full bg-gray-600 rounded-lg h-5 overflow-hidden border border-gray-500">
+                  <div
+                    className="h-full bg-gradient-to-r from-pink-500 to-purple-500 rounded-lg transition-all duration-500 ease-out"
+                    style={{ width: `${progress}%` }}
+                  />
+                </div>
+                <p className="text-center mt-2 text-sm font-semibold text-pink-400">
+                  {progress}%
+                </p>
+              </div>
             </>
           ) : (
             <>
-              <input 
+              <input
                 id="file-upload"
-                type="file" 
-                className="hidden" 
+                type="file"
+                className="hidden"
                 accept="audio/mpeg"
                 onChange={handleFileSelect}
                 disabled={isProcessing}
               />
-              <div 
+              <div
                 className="bg-pink-500/10 p-4 rounded-xl mb-4 cursor-pointer"
                 onClick={() => document.getElementById('file-upload')?.click()}
               >

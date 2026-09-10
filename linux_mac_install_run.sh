@@ -37,7 +37,9 @@ echo "🎯 Avvio dei servizi..."
 
 # Avvio del backend con Gunicorn
 cd ../demucs-backend
-uv run python -m gunicorn --bind 0.0.0.0:5001 --workers 1 --timeout 120 app:app &
+# OBJC_DISABLE_INITIALIZE_FORK_SAFETY previene il crash di MPS/Metal al fork su macOS
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+uv run python -m gunicorn --bind 0.0.0.0:5001 --workers 1 --timeout 600 --preload app:app &
 BACKEND_PID=$!
 disown $BACKEND_PID 2>/dev/null
 
