@@ -1,4 +1,4 @@
-const { app, BrowserWindow, nativeImage } = require('electron');
+const { app, BrowserWindow, ipcMain, nativeImage, shell } = require('electron');
 const { ChildProcess, spawn } = require('child_process');
 const fs = require('fs');
 const http = require('http');
@@ -118,6 +118,43 @@ function createWindow() {
     win?.loadFile(path.join(__dirname, '..', 'dist', 'index.html'));
   });
 }
+
+async function checkForUpdates() {
+  try {
+    const res = await fetch('https://api.github.com/repos/huchukato/stemify-audio-splitter/releases/latest', {
+      headers: { 'User-Agent': 'Stemify' },
+    });
+    if (!res.ok) return { error: `HTTP ${res.status}` };
+    const rel = await res.json();
+    const latest = String(rel.tag_name ?? '').replace(/^v/, '');
+    const current = app.getVersion();
+    const newer = (() => {
+      const a = latest.split('.').map(Number);
+      const b = current.split('.').map(Number);
+      for (let i = 0; i < 3; i++) if ((a[i] || 0) !== (b[i] || 0)) return (a[i] || 0) > (b[i] || 0);
+      return false;
+    })();
+    if (!latest || !newer) return { upToDate: true, current, latest };
+    const pick = (re) => (rel.assets ?? []).find((a) => re.test(a.name))?.browser_download_url;
+    const downloadUrl =
+      process.platform === 'darwin' ? pick(/\.dmg$/)
+      : process.platform === 'win32' ? pick(/\.exe$/)
+      : pick(/\.AppImage$/) ?? pick(/\.deb$/);
+    return {
+      upToDate: false, current, latest,
+      releaseUrl: rel.html_url,
+      downloadUrl,
+      notes: String(rel.body ?? '').slice(0, 600),
+    };
+  } catch (e) {
+    return { error: String(e) };
+  }
+}
+
+ipcMain.handle('update:check', checkForUpdates);
+ipcMain.on('update:open', (_e, url) => {
+  if (typeof url === 'string' && url.startsWith('https://')) shell.openExternal(url);
+});
 
 app.whenReady().then(createWindow);
 

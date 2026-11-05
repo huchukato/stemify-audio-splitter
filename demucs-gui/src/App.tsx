@@ -36,6 +36,7 @@ export default function App() {
   const [format, setFormat] = useState<'wav' | 'mp3'>('wav');
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [muted, setMuted] = useState<Record<string, boolean>>({});
+  const [updateInfo, setUpdateInfo] = useState<UpdateInfo | null>(null);
 
   const refreshLibrary = async () => {
     setLibrary(await getLibrary());
@@ -51,6 +52,9 @@ export default function App() {
     };
     checkServer();
     refreshLibrary();
+    window.stemify?.checkUpdate?.().then((u) => {
+      if (u && !u.upToDate) setUpdateInfo(u);
+    }).catch(() => {});
   }, []);
 
   const handleFileUpload = async (file: File) => {
@@ -141,6 +145,21 @@ export default function App() {
 
   return (
     <div className="flex h-screen overflow-hidden bg-neutral-950 text-neutral-100">
+      {updateInfo && (
+        <div className="fixed top-0 inset-x-0 z-50 flex items-center justify-center gap-3 bg-blue-600 px-4 py-2 text-sm shadow-lg">
+          <span>
+            Stemify <b>{updateInfo.latest}</b> available — you have {updateInfo.current}
+          </span>
+          <a
+            href={updateInfo.releaseUrl}
+            onClick={(e) => { e.preventDefault(); window.stemify?.openExternal?.(updateInfo.releaseUrl ?? ''); }}
+            className="font-semibold underline underline-offset-2"
+          >
+            Download
+          </a>
+          <button onClick={() => setUpdateInfo(null)} className="ml-1 opacity-70 hover:opacity-100" aria-label="Dismiss">✕</button>
+        </div>
+      )}
       {sidebarOpen && (
         <Sidebar
           items={library}
